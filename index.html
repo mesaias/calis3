@@ -1,0 +1,328 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery Mobile: Theme Download</title>
+	<link rel="stylesheet" href="themes/catalogo.min.css" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile.structure-1.0.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+    
+     <script type="text/javascript">
+//add listener when device ready
+    document.addEventListener("deviceready", onDeviceReady, false);
+    var db = window.openDatabase("MonicaProyecto", "1.0", "Just a Dummy DB", 200000); //will create database Dummy_DB or open it
+ 
+    //function will be called when device ready
+    function onDeviceReady(){
+        db.transaction(populateDB, errorCB, successCB);
+    }
+ 
+    //create table and insert some record
+    function populateDB(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY kEY, name TEXT, description TEXT, price INTEGER, stock INTEGER, category TEXT, date TEXT)');
+        tx.executeSql('INSERT INTO items(id, name, description, price, stock, category, date) VALUES ("1,", "gtx","tiene 4 db", "6000","100","NVIDIA", "10/10/2016")');
+        tx.executeSql('INSERT INTO items(Nid, name, description, price, stock, category, date) VALUES ("15,", "gtx2","tiene 8 db", "12000","50","NVIDIA", "10/10/2016")');
+    }
+ 
+    //function will be called when an error occurred
+    function errorCB(err) {
+        alert("Error processing SQL: "+err.code);
+    }
+ 
+    //function will be called when process succeed
+    function successCB() {
+        alert("success!");
+        db.transaction(queryDB,errorCB);
+    }
+ 
+    //select all from SoccerPlayer
+    function queryDB(tx){
+        tx.executeSql('SELECT * FROM items',[],querySuccess,errorCB);
+    }
+ 
+    function querySuccess(tx,result){
+        $('#SoccerPlayerList').empty();
+        $.each(result.rows,function(index){
+            var row = result.rows.item(index);
+            $('#SoccerPlayerList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['name']+'</h3><p class="ui-li-desc">Club '+row['description']+'</p></a></li>');
+        });
+ 
+        $('#SoccerPlayerList').listview();
+    }
+
+
+     /*
+         
+        window.addEventListener('load', agregado);   
+
+     var db=openDatabase("myDB", "1.0", "MonicaProyecto", 2*1024*1024);
+
+
+          db.transaction(function(tx)
+          {
+            tx.executeSql("CREATE TABLE IF NOT EXISTS items(id INTEGER PRIMARY kEY, name TEXT, description TEXT, price INTEGER, stock INTEGER, category TEXT, date TEXT)");
+          });
+
+          function agregado(){
+            document.getElementById('btnAceptar').addEventListener('click',salvar);
+
+          }
+          function salvar()
+          {
+            var id = document.getElementById('campoID').value;
+            var name = document.getElementById('campoNombre').value;
+            var description = document.getElementById('campoDescripcion').value;
+            var price = document.getElementById('campoPrecio').value;
+            var stock = document.getElementById('campoID').value;
+            var category = document.getElementById('campoCategoria').value;
+            var date = document.getElementById('campoFecha').value;
+
+            db.transaction(function(tx)
+            {
+              tx.executeSql('INSERT INTO items(id, name, description, price, stock, category, date)VALUES(?,?,?)', [id, name, description, price, stock, stock, category, date]);
+              });
+
+          }
+
+            /*
+            -----------------------------------------------------------------
+            document.addEventListener("deviceready", onDeviceReady, false);
+             
+            var db;
+             
+            function onDeviceReady() {
+                db = window.openDatabase("Database", "1.0", "MonicaProyecto", 2*1024*1024);
+                db.transaction(createDB, errorCB, successCB);
+     
+            }
+         
+            function createDB(tx) {
+                //tx.executeSql('DROP TABLE IF EXISTS DEMO');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS PRODUCTOS (id, name, image, description, price, stock, category, date)');
+             
+            }
+         
+            function errorCB(err) {
+                alert("Error processing SQL: "+err.code);
+            }
+         
+            function successCB() {
+               // alert("YEAH!!!!");
+            }
+         
+            function insertDB(tx) {
+                var _id = $("[name='title']").val();
+                var _name = $("[name='image']").val();
+                var _image = $("[name='description']").val();
+				var _description = $("[name='description']").val();
+				var _price = $("[name='description']").val();
+				var _stock = $("[name='description']").val();
+				var _category = $("[name='description']").val();
+				var _date = $("[name='description']").val();
+                var sql = 'INSERT INTO PRODUCTOS (id, name, image,description, price, stock, category, date) VALUES (?,?,?)';
+                tx.executeSql(sql, [_id, _name, _image,_description, _price, _stock, _category, _date], sucessQueryDB, errorCB);
+ 
+            }
+         
+            function sucessQueryDB(tx) {     
+                tx.executeSql('SELECT * FROM PRODUCTOS', [], renderList, errorCB);
+            }
+         
+            function renderList(tx,results) {
+                var htmlstring = '';
+                 
+                var len = results.rows.length;
+                 
+                for (var i=0; i<len; i++){
+                    htmlstring += '<li>' + results.rows.item(i).name + '</li>';
+                     
+                }
+                 
+                $('#resultList').html(htmlstring);
+                $('#resultList').listview('refresh');
+                 
+                 
+            }
+ 
+            function submitForm() {
+                db.transaction(insertDB, errorCB);
+                $.mobile.changePage( "#home", { reverse: false, transition: "slide" } );
+                return false;
+            }
+ */
+ 
+        </script>
+   
+    
+</head>
+<body>
+<!--<body onLoad="onBodyLoad()">
+        
+  <!--  esta es la página de entrada: el listado de clientes-->
+<div data-role="page" id="home"  data-theme="a" >
+      <div data-role="header">
+        <div class="ui-btn-left">
+        <a href="#agregarItem" data-role="button" data-inline="true" data-icon="plus" data-iconpos="notext">Agregar</a>
+        </div>
+      	<h1>Productos</h1>
+        <div class="ui-btn-right">
+        <a href="#ayuda" data-role="button" data-inline="true" data-icon="info" data-iconpos="notext">Ayuda</a>
+        </div>
+      </div>
+		<div data-role="content" data-theme="a">
+		  <div data-role="collapsible-set">
+		    <div data-role="collapsible">
+		      <h3>Tarjetas de vídeo</h3>
+		      <p>              
+		     
+             <script type="text/javascript">
+//add listener when device ready
+    document.addEventListener("deviceready", onDeviceReady, false);
+    var db = window.openDatabase("MonicaProyecto", "1.0", "Just a Dummy DB", 200000); //will create database Dummy_DB or open it
+ 
+    //function will be called when device ready
+    function onDeviceReady(){
+        db.transaction(populateDB, errorCB, successCB);
+    }
+ 
+    //create table and insert some record
+    function populateDB(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY kEY, name TEXT, description TEXT, price INTEGER, stock INTEGER, category TEXT, date TEXT)');
+        tx.executeSql('INSERT INTO items(id, name, description, price, stock, category, date) VALUES ("1,", "gtx","tiene 4 db", "6000","100","NVIDIA", "10/10/2016")');
+        tx.executeSql('INSERT INTO items(Nid, name, description, price, stock, category, date) VALUES ("15,", "gtx2","tiene 8 db", "12000","50","NVIDIA", "10/10/2016")');
+    }
+ 
+    //function will be called when an error occurred
+    function errorCB(err) {
+        alert("Error processing SQL: "+err.code);
+    }
+ 
+    //function will be called when process succeed
+    function successCB() {
+        alert("success!");
+        db.transaction(queryDB,errorCB);
+    }
+ 
+    //select all from SoccerPlayer
+    function queryDB(tx){
+        tx.executeSql('SELECT * FROM items',[],querySuccess,errorCB);
+    }
+ 
+    function querySuccess(tx,result){
+        $('#SoccerPlayerList').empty();
+        $.each(result.rows,function(index){
+            var row = result.rows.item(index);
+            $('#SoccerPlayerList').append('<li><a href="#"><h3 class="ui-li-heading">'+row['name']+'</h3><p class="ui-li-desc">Club '+row['description']+'</p></a></li>');
+        });
+ 
+        $('#SoccerPlayerList').listview();
+    }
+	</script>
+             
+		       
+		          <p>                  
+		        
+                  </p>
+	            </div>
+		      
+	         
+              </p>
+	        </div>
+             <div data-role="collapsible" data-collapsed="true">
+		      <h3>Tarjetas madres</h3>
+		      <p>Contenido</p>
+	        </div>
+             <div data-role="collapsible" data-collapsed="true">
+		      <h3>Procesadores</h3>
+		      <p>Contenido</p>
+	        </div>
+		    <div data-role="collapsible" data-collapsed="true">
+		      <h3>Memorias</h3>
+		      <p>Contenido</p>
+	        </div>
+		    <div data-role="collapsible" data-collapsed="true">
+		      <h3>Almacenamiento</h3>
+		      <p>Contenido</p>
+	        </div>
+             <div data-role="collapsible" data-collapsed="true">
+		      <h3>Monitores y pantallas</h3>
+		      <p>Contenido</p>
+	        </div>
+	      </div>
+			
+	  </div>
+	</div>
+<div data-role="page" id="agregarItem" data-theme="a" >
+    <div data-role="header">
+      <h1>Registro de productos</h1>
+    </div>
+    <div data-role="content">
+    <form method="post" onSubmit="return submitForm()" id="myForm" data-ajax="false">
+    <div data-role="fieldcontain">
+        <label for="textinput">ID:</label>
+        <input type="number" name="id" id="campoID" value="" placeholder="Introduce el ID del producto" />
+      </div>
+      <div data-role="fieldcontain">
+        <label for="textinput2">Nombre del producto:</label>
+        <input type="text" name="nombre" id="campoNombre" value="" placeholder="Producto" />
+      </div>
+      <div data-role="fieldcontain">
+        <label for="textinput3">Imagen:</label>
+       <input type="file" name="imagen" id="campoImagen" accept="image/x-png, image/gif, image/jpeg" />
+      </div>
+      
+       <div data-role="fieldcontain">
+        <label for="textinput3">Descripción:</label>
+        <textarea name="descripcion" id="campoDescripcion" value="" placeholder="Descripción">
+      </textarea>
+      </div>
+      
+      <div data-role="fieldcontain">
+        <label for="textinput">Precio:</label>
+        <input type="number" name="precio" id="campoPrecio" value="" placeholder="Introduce el precio" />
+      </div>
+      <div data-role="fieldcontain">
+        <label for="slider">Stock:</label>
+        <input type="range" name="slider" id="campoStock" value="0" min="0" max="100" />
+      </div>
+      <div data-role="fieldcontain">
+        <label for="selectmenu" class="select">Opciones:</label>
+        <select name="selectmenu" id="campoCategoria">
+          <option value="option1">Tarjetas de vídeo</option>
+          <option value="option2">Tarjetas madre</option>
+          <option value="option3">Almacenamiento</option>
+        </select>
+      </div>
+      <div data-role="fieldcontain">
+      <label for="textinput5">Fecha de registro:</label>
+      <input type="date" name="textinput5" placeholder="Fecha de registro" id="campoFecha" data-role="datebox"value="" />
+    </div>
+      <button data-icon="checkbox-on" data-iconpos="left" id="btnAceptar" data-theme="a">Aceptar</button>
+
+     
+     
+     
+                </form>
+      
+    	
+    
+  </div>
+  <div data-role="footer">
+      <h4>Pie</h4>
+    </div>
+  </div>
+<div data-role="page" id="infoItem">
+  <div data-role="header">
+    <h1>Encabezado</h1>
+  </div>
+  <div data-role="content">Contenido</div>
+  <div data-role="footer">
+    <h4>Pie</h4>
+  </div>
+</div>
+    
+    
+    
+</body>
+</html>
